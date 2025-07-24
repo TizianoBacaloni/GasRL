@@ -303,8 +303,8 @@ if __name__ == "__main__":
     # test model directory
     model_dir = "test_model_dir_seed"
     
-    run_experiment(total_steps=100, models_dir=model_dir, 
-                   n_reps=3, pen=2_00,pen_thresh = 1, model_type="SAC", step_increment = 50)
+    run_experiment(total_steps=1_000_000, models_dir=model_dir, 
+                   n_reps=10, pen=2_00,pen_thresh = 1, model_type="SAC", step_increment = 2_000)
 
    
 
