@@ -9,7 +9,7 @@ def plot_sigma_robustness(sigmas, means, cis, metrics):
         ci_vals = np.array(cis[metric])
         axhline = None 
 
-        if metric == 'Inventory':
+        if metric == 'inventory':
             mean_vals = np.array(means[metric])
             ci_vals = np.array(cis[metric])
             axhline = 2.7
@@ -59,7 +59,6 @@ def plot_time_series(t, mean_vals, ci_vals, metric, checkpoint_steps=None, savin
         
     
 
-    plt.legend()
     plt.grid(True)
 
     # create the folder if it doesn't exist
@@ -85,7 +84,7 @@ def plot_checkpoint_time_series(time_series_stats=None, test_folder=None, checkp
         ci_vals = time_series_stats[metric]["ci"][0][:]
         t = np.arange(len(ci_vals))
         axhline = None 
-        if metric == 'Inventory':
+        if metric == 'inventory':
             axhline = 2.7
         plot_time_series(t, mean_vals, ci_vals, metric, checkpoint_steps, test_folder, axhline=axhline)
         
@@ -135,7 +134,7 @@ def plot_aggregate_results(aggregate_results, model_folder):
         plt.ylabel(key)
         plt.title(f"Mean of {key}")
 
-        if key == 'Inventory':
+        if key == 'inventory':
             plt.axhline(y=2.4,
                        linestyle='--',
                        linewidth=2,

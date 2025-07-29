@@ -6,6 +6,21 @@ from penalty_threshold_gas_storage_env import GasStorageEnv  # Import of the env
 from utils_plot import plot_checkpoint_time_series, plot_aggregate_results 
 
 
+
+
+METRIC_KEYS = ["reward", "bank account", "inventory", "market", "demand", "supply", 
+               "excess demand", "demand shifter", "supply shifter", "delta price", "price","reward for the mean", "november inventory","demand unsat","wasted supply"] 
+  
+    
+
+
+##########################################################################
+##########################################################################
+## SET MAIN AT THE END OF THE SCRIPT AND RUN IT TO TRAIN-TEST THE MODEL ##
+##########################################################################
+##########################################################################
+
+
 def compute_steps_schedule(total_steps: int, step_increment: int) -> list[int]:
     """
         Returns the list of cumulative checkpoints,
@@ -56,6 +71,8 @@ def run_experiment(total_steps, models_dir, n_reps,model_type, pen = None,pen_th
         train_env.h = pen
     if vol_pen is not None:
         train_env.theta = vol_pen
+    if pen_thresh is not None:
+        train_env.penalty_threshold = pen_thresh
 
     if model_type == "PPO":
         model = PPO("MlpPolicy", train_env, verbose=1, tensorboard_log="./tensorboard/" + specs_name)
@@ -201,7 +218,7 @@ def run_test(model, n_reps, max_test_steps, ep_metric_keys, sigma = None):
     episodes_data = {key: [] for key in ep_metric_keys}
     
     
-    for _ in range(n_reps):
+    for _ in range(n_reps):   #Loop su tutti gli n_reps epsiodi, quindi credo un raccoglitore in cui ho n_reps elementi
         test_env = GasStorageEnv()
         if sigma is not None:
             old_sigma = test_env.sigma_s
@@ -209,7 +226,7 @@ def run_test(model, n_reps, max_test_steps, ep_metric_keys, sigma = None):
             test_env.sigma_s = sigma  # Imposta il valore corrente di sigma
             test_env.mu_s = old_mu + ((old_sigma**2)-(sigma**2))/2
         obs, info = test_env.reset()
-        ep_data = {key: [] for key in ep_metric_keys}
+        ep_data = {key: [] for key in ep_metric_keys}   #Per l'episodio corrente (ad esempio il primo dei n_reps=10) raccolgo i valori di ciascuna metrica nei max_test_steps del test
         cumulative_market = 0
         cumulative_reward = 0
         dem_unsati = 0
@@ -221,9 +238,9 @@ def run_test(model, n_reps, max_test_steps, ep_metric_keys, sigma = None):
             action, _ = model.predict(obs, deterministic=True)
             obs, reward, _, _, info = test_env.step(action)
             
-            for key in ep_metric_keys:
+            for key in ep_metric_keys: #All'interno del dizionario che, per l'episodio corrente, contiene il valore della metrica per ognuno dei max_test_steps, scelgo come salvare il valore
                 if key == "reward":
-                    cumulative_reward += reward
+                    cumulative_reward += reward      # Nel caso della reward la rendo cumulativa, per cui il valore signficativo sarà l'ultimo dei max_test_steps perchè è la somma delle reward a tutti gli istanti precedenti
                     ep_data[key].append(cumulative_reward)
                 elif key == "reward for the mean":
                     ep_data[key].append((reward))
@@ -236,35 +253,36 @@ def run_test(model, n_reps, max_test_steps, ep_metric_keys, sigma = None):
                     novembers = np.arange(max_test_steps)[9::12]
                     is_november = t in novembers
                     if is_november:
-                        ep_data[key].append(info["Inventory"])
+                        ep_data[key].append(info["inventory"])
                     else:
                         ep_data[key].append(np.nan)
                 elif key == "demand unsat":
-                    dem_unsati += info["Demand not satisfied"]
+                    dem_unsati += info["demand unsat"]
                     ep_data[key].append(max_test_steps - dem_unsati)
                 elif key == "wasted supply":
-                    wasted_supply += info["Supply wasted"]
+                    wasted_supply += info["supply wasted"]
                     ep_data[key].append(max_test_steps-wasted_supply)
                 else:
                     ep_data[key].append(info[key])
+        
             
         test_env.close()
         
         for key in ep_metric_keys:
-            episodes_data[key].append(ep_data[key])
+            episodes_data[key].append(ep_data[key]) # Aggiungo gli n_reps dizionari, uno per ciascun episodi, a quello generale: episode_data[price] avrà n_reps elementi ognuno lungo max_test_steps
         
     print(f"Test completato con {n_reps} ripetizioni")
 
     for key in ep_metric_keys:
-        data = np.array(episodes_data[key])
-        mean = np.squeeze(np.nanmedian(data, axis=0))
+        data = np.array(episodes_data[key])           # shape = (n_reps, max_test_steps)
+        mean = np.squeeze(np.nanmedian(data, axis=0)) # mediana passo‑per‑passo → vettore di lunghezza max_test_steps
         std = np.squeeze(np.array(np.nanstd(data, axis = 0)))
         se = std / np.sqrt(n_reps)
         ci = 1.96 * se
 
 
         # Aggiorna gli accumulatori globali
-        agg_mean[key].append(mean)
+        agg_mean[key].append(mean) 
         agg_ci[key].append(ci)
         agg_std[key].append(std)
 
@@ -283,9 +301,7 @@ def run_test_general(model, n_reps, max_test_steps):
       * final: per ogni metrica, il valore al max_test_steps aggregato (media, std, CI) sui vari episodi.
     """
     # Definisco le metriche che intendo tracciare
-    metric_keys = ["reward", "Bank account", "Inventory", "market", "Demand", "Supply", 
-               "Excess demand", "Demand Shifter", "Supply Shifter", "Delta Price", "price","reward for the mean", "november inventory","demand unsat","wasted supply"] 
-  
+    metric_keys = METRIC_KEYS
     
     agg_mean, agg_ci, agg_std, episodes_data = run_test(model, n_reps, max_test_steps, metric_keys)
     
@@ -298,13 +314,18 @@ def run_test_general(model, n_reps, max_test_steps):
 
     
 
+###########################################################################
+############## DEFAULT PARAMETERS YOU CAN CHANGE AS YOU WISH ##############
+###########################################################################
+
+
 if __name__ == "__main__":
     
     # test model directory
     model_dir = "test_model_dir_seed"
     
-    run_experiment(total_steps=1_000_000, models_dir=model_dir, 
-                   n_reps=10, pen=2_00,pen_thresh = 1, model_type="SAC", step_increment = 2_000)
+    run_experiment(total_steps=1_500_000, models_dir=model_dir, 
+                   n_reps=5, pen=2_00,pen_thresh = 1_000, model_type="SAC", step_increment = 50)
 
    
 
