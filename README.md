@@ -1,5 +1,6 @@
 # GasRL
-This code  easily replicates the results of [inserisci link] by running the notebooks below without changes. 
+This code  easily replicates the results of [inserisci link] by running the notebooks below without changes.
+The two ZIP files contain the models used to generate the figures.
 If desired, you can train alternative models and use them to generate figures analogous to those in the paper. 
 Below are the steps required to understand and utilize the code:
 
