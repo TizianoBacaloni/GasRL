@@ -14,7 +14,7 @@ Below are the steps required to understand and utilize the code, with [] specifi
 
 3) `Gas_Storage_Env.py` [Utils] defines the environment used across the various simulations.
 
-4) `Test.py` computes and saves data  needed in the following notebooks. Run this script before running them.
+4) `Test.py`  computes and saves data  needed in the following notebooks. Run this script before running them.
    
 5) `Volatility.jpynb` [Plots] compute price volatility.
    
