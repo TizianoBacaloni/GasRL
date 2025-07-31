@@ -1,13 +1,18 @@
 # GasRL
-This is the code to easy replicate the results of [inserisci link]
-Di seguito i passaggi necessari alla comprensione ed all'utilizzo del codice:
+This is the code to easy replicate the results of [inserisci link], just running the notebooks belows without changes. 
+If desired, you can train alternative models and use them to generate figures analogous to those in the paper. 
+Below are the steps required to understand and utilize the code:
 
-1) Easy_Train.py permette l'allenamento del modello per il numero di step desidarti, salvando il modello e testandolo a diversi checpoint intermedi della trining-phase. Modificando i valori inseriti nel "main" al termine dello script è possibile modificare i diversi parametri, come il numero complessivo di step di allenamento e l'intervallo di salvataggio
+1) Easy_Train.py streamlines model training by letting you set total steps, auto-save at chosen intervals, and evaluate each checkpoint. Simply tweak the arguments passed to the main() function at the script’s end to adjust steps, checkpoint frequency, learning rates, and more.
 
-2) Easy_Plot.py contiene semplicemente le funzioni necessarie ad utilizzare correttamente gli altri file presenti
+2) Easy_Plot.py provides the essential utility functions to seamlessly use and visualize outputs from the other scripts.
 
-3) Easy_Test.jpynb permette di ottenere e salvare i dati aggregati e relativi alle singole timeseries per le diverse metriche e deve essere runnato prima di entrambi gli altri due notebook
+3) Gas_Storage_Env.py defines the environment used across the various simulations.
 
-4) Easy_Price.jpynb calcola la volatilità di prezzo con i due approcci proposti ed offre un confronto grafico tra i due
+4) Easy_Test.py computes and save data that are need in the following notebooks. Run this script before running them.
+   
+5) Easy_Price.jpynb compute price volatility.
+   
+7) Easy_Seasonality.ipynb computes price seasonality using the methods proposed in the paper and compares them against real-world data.
 
-5) Easy_Seasonality.jpynb permette di calcolare la stagionalità dei prezzi secondo i diversi approcci proposti nell'articolo e di confrontarla con quella ottenuta dai dati reali
+
