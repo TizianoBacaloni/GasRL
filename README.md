@@ -22,6 +22,6 @@ Below are the steps required to understand and utilize the code, with [] specifi
 
 8) `Robustness.py` [Plots] lets you compare the robustness of both the unpenalized model (Θₙ = 0) and the penalized model (Θₙ > 0) when the test supply shock (σₛ) exceeds the training value of 0.04.
 
-9) **`sac_model_1500000_pen1000.0_pen_thresh1000.0_rep1.zip`** and **`sac_model_1500000_pen1000.0_pen_thresh0.0_rep4.zip`**  [Models] are the models used for the simulations of the paper.
+9) **`sac_model_1500000_pen1000.0_pen_thresh1000.0_rep1.zip`** and **`sac_model_1500000_pen1000.0_pen_thresh0.0_rep4.zip`**  [Models] are the models used for the simulations of the paper
 
 
