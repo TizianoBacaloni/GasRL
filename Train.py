@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import os
 from stable_baselines3 import PPO,SAC,A2C,DDPG,TD3,DQN
-from penalty_threshold_gas_storage_env import GasStorageEnv  # Import of the environment defined in the stable_baselines_version.py file
+from Gas_Storage_Env import GasStorageEnv  # Import of the environment defined in the stable_baselines_version.py file
 from utils_plot import plot_checkpoint_time_series, plot_aggregate_results 
 
 
