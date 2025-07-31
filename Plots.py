@@ -20,6 +20,7 @@ def plot_sigma_robustness(sigmas, means, cis, metrics):
 def plot_sigma_robustness_single(sigmas, mean_vals, ci_vals, metric, axhline=None):
     """
     Plots the mean and confidence interval for a given metric across different sigma values.
+    
     """
 
     
@@ -75,8 +76,9 @@ def plot_time_series(t, mean_vals, ci_vals, metric, checkpoint_steps=None, savin
 
 def plot_checkpoint_time_series(time_series_stats=None, test_folder=None, checkpoint_steps=None): #Time series is here equal to episode_data
     """
-    Per ogni metrica, plotta l'evoluzione nel tempo (asse x = test steps)
-    con la linea della media e una banda data dalla CI.
+    For each metric in time_series_stats, plot the evolution over time (x-axis = test steps)
+    with the mean line and a band given by the confidence interval (CI).
+    
     """
 
     for metric in time_series_stats.keys():
@@ -93,22 +95,23 @@ def plot_checkpoint_time_series(time_series_stats=None, test_folder=None, checkp
 
 def plot_aggregate_results(aggregate_results, model_folder):
     """
-    Per mostrare l'andamento aggregato delle metriche, si prende l'ultimo 
-    valore registrato nei test svolti ad ogni checkpoint.
-    Considero il valore medio sulle 10 ripetizioni per market allo step 360
-    del test effettuato considerando il modello salvato al 1 checkpoint;
-    Considero il valore medio sulle 10 ripetizioni per market allo step 360
-    del test effettuato considerando il modello salvato al e checkpoint e così via.
-    Poi li unisco tra loro come con i puntini.
-    Ottengo
-      1. L'andamento della MEDIA (con banda di CI) per ogni metrica.
-      2. L'andamento della DEVIAZIONE STANDARD per ogni metrica.
+    To show the aggregated metrics, we take the last value recorded in the tests performed at each checkpoint.
+    I consider the average over the 10 repetitions for each market at step 360
+    of the test performed considering the model saved at the 1st checkpoint;
+    I consider the average over the 10 repetitions for each market at step 360
+    of the test performed considering the model saved at the 2nd checkpoint and so on.
+    Then I combine them together as with the dots.
+    I obtain:
+      1. The trend of the MEAN (with CI band) for each metric.
+      2. The trend of the STANDARD DEVIATION for each metric.
+
     """
-    # Le chiavi di aggregate_results sono nomi dei checkpoint tipo "ppo_model_<steps>.zip"
-    #print(f'LE AGGREGATE RESULTS SONO: {aggregate_results}')
-    # Estrae le chiavi delle metriche dai risultati aggregati     
+    # Keys of aggregate_results are the names of the checkpoints, e.g. "ppo_model_1000000.zip"
+
+    # Extract keys of metrics from the aggregated results
     metric_keys = list(next(iter(aggregate_results.values())).keys())
-    # Estrae gli step dai nomi dei checkpoint e organizza i dati per ogni metrica
+
+    # Extract steps from checkpoint names and organize data for each metric
     checkpoints = []
     agg_mean_fin = {key: [] for key in metric_keys}
     agg_ci_fin = {key: [] for key in metric_keys}
@@ -122,7 +125,7 @@ def plot_aggregate_results(aggregate_results, model_folder):
             agg_ci_fin[key].append(stats[key]["ci"][0][-1])
             agg_std_fin[key].append(stats[key]["std"][0][-1])
    
-    # Per ciascuna metrica, plot separato per la media (con CI) e per la std
+    # For each metric, plot the mean with CI and the std
     for key in metric_keys:
         plt.figure(figsize=FIGSIZE)
         means = np.array(agg_mean_fin[key])
