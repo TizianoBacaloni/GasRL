@@ -1,5 +1,5 @@
 # GasRL
-This code  easily replicates the results of [inserisci link] by running the notebooks below without changes.
+The code  easily replicates the results of [inserisci link] by running the notebooks below without changes.
 The two ZIP files contain the models used to generate the figures:  
 **`sac_model_1500000_pen1000.0_pen_thresh1000.0_rep1.zip`** is used just in `Robustness.py`,  
 while the baseline specification **`sac_model_1500000_pen1000.0_pen_thresh0.0_rep4.zip`**  
