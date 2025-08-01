@@ -1,9 +1,9 @@
-conda create -n gymnasium -y python=3.9
-conda activate gymnasium
+conda create -n gasrl -y python=3.9
+conda activate gasrl
 conda install -y numpy=1.25
 conda install pytorch torchvision torchaudio cpuonly -c pytorch
 conda install -y ipykernel
-python -m ipykernel install --user --name gymnasium --display-name "gymnasium"
+python -m ipykernel install --user --name gasrl --display-name "gasrl"
 pip install gymnasium
 conda install -y matplotlib
 conda install -y pandas
