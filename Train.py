@@ -164,7 +164,7 @@ def test_checkpoints(model_folder, n_reps, max_test_steps, model_type):
     time_series={}
     for checkpoint in checkpoint_files:
         checkpoint_path = os.path.join(model_folder, checkpoint)
-        
+
         
         # Model loading
         if model_type == "PPO":
