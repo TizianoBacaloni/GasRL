@@ -70,7 +70,7 @@ def plot_time_series(t, mean_vals, ci_vals, metric, checkpoint_steps=None, savin
         plt.savefig(os.path.join(saving_folder, f"{metric}_time_series.png"))
         plt.close()
 
-        print(f"Grafico time series per {metric} salvato in {saving_folder}")
+        
 
                 
 
@@ -150,7 +150,6 @@ def plot_aggregate_results(aggregate_results, model_folder):
         plt.tight_layout()
         plt.savefig(mean_path)
         plt.close()
-        print(f"Mean of {key} saved in {mean_path}")
 
         # Grafico per la deviazione standard
         plt.figure(figsize=(4, 3))
@@ -165,5 +164,4 @@ def plot_aggregate_results(aggregate_results, model_folder):
         plt.tight_layout()
         plt.savefig(std_path)
         plt.close()
-        print(f"Standard deviation of {key} saved in {std_path}")
         

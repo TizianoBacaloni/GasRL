@@ -101,7 +101,6 @@ def run_experiment(total_steps, models_dir, n_reps,model_type, pen = None,pen_th
         if steps_to_run <= 0:
             break
 
-        print(f"\n=== Training: checkpoint {i} (fino a {target_steps} step, eseguendo {steps_to_run} step) ===")
         model.learn(total_timesteps=steps_to_run, reset_num_timesteps=False,tb_log_name=f"{model_type}_ts{total_steps}_pen{pen}_pen_thresh{pen_thresh}_rep{rep_number}")
         current_total_steps = target_steps
 
@@ -122,7 +121,6 @@ def run_experiment(total_steps, models_dir, n_reps,model_type, pen = None,pen_th
             model_snapshot_path = os.path.join(model_folder, f"td3_model_{current_total_steps}_pen{pen}_pen_thresh{pen_thresh}_rep{rep_number}.zip")
             model.save(model_snapshot_path)
         
-        print(f"Model saved: {model_snapshot_path}")
 
         i += 1
         
@@ -166,8 +164,7 @@ def test_checkpoints(model_folder, n_reps, max_test_steps, model_type):
     time_series={}
     for checkpoint in checkpoint_files:
         checkpoint_path = os.path.join(model_folder, checkpoint)
-        print(f" riga 146 Checkpoint path: {checkpoint_path}")
-        print(f"\n--- Testing checkpoint: {checkpoint_path} ---")
+        
         
         # Model loading
         if model_type == "PPO":
@@ -321,7 +318,7 @@ if __name__ == "__main__":
     # test model directory
     model_dir = "test_model_dir_seed"
     
-    run_experiment(total_steps=1_500_000, models_dir=model_dir, 
+    run_experiment(total_steps=1_500, models_dir=model_dir, 
                    n_reps=5, pen=2_00,pen_thresh = 1_000, model_type="SAC", step_increment = 50)
 
    
