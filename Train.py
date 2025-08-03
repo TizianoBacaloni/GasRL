@@ -166,8 +166,6 @@ def test_checkpoints(model_folder, n_reps, max_test_steps, model_type):
     time_series={}
     for checkpoint in checkpoint_files:
         checkpoint_path = os.path.join(model_folder, checkpoint)
-        print(f" riga 146 Checkpoint path: {checkpoint_path}")
-        print(f"\n--- Testing checkpoint: {checkpoint_path} ---")
         
         # Model loading
         if model_type == "PPO":
