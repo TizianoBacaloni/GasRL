@@ -264,7 +264,7 @@ def run_test(model, n_reps, max_test_steps, ep_metric_keys, sigma = None):
         for key in ep_metric_keys:
             episodes_data[key].append(ep_data[key]) # Add the n_reps dictionaries—one for each episode—to the main one: episode_data[key] will have n_reps elements, each of length max_test_steps.
         
-    print(f"Test completed with {n_reps} repetitions")
+    
 
     for key in ep_metric_keys:
         data = np.array(episodes_data[key])           # shape = (n_reps, max_test_steps)
