@@ -1,4 +1,4 @@
-conda create -n gasrl -y python=3.9
+conda create -n gasrl -y python=3.12.9
 conda activate gasrl
 conda install -y numpy=1.25
 conda install pytorch torchvision torchaudio cpuonly -c pytorch

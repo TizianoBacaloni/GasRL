@@ -6,7 +6,7 @@ import torch
 import torch.nn.functional as F
 
 half =torch.tensor(0.5, dtype=torch.float32)
-tres = torch.tensor(0.8,dtype=torch.float32)
+tres = torch.tensor(0.8, dtype=torch.float32)
 
 class GasStorageEnv(gym.Env):
     def __init__(self):
