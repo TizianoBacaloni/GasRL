@@ -8,6 +8,8 @@ is used in all notebooks and scripts.
 If desired, you can train alternative models and use them to generate figures analogous to those in the paper. 
 Below are the steps required to understand and utilize the code, with [] specifing the repository of the file:
 
+0) Install the required packages with `conda env create -f environment.yml`
+
 1) `Train.py`  streamlines model training by letting you set total steps, auto-save at chosen intervals, and evaluate each checkpoint. Just tweak the arguments passed to the main() function at the script’s end to adjust steps, checkpoint frequency, learning rates, and more.
 
 2) `Plots.py` [Utils]provides the essential utility functions to  use and visualize outputs from the other scripts.
